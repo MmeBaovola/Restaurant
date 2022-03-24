@@ -8,6 +8,10 @@
         <servlet-name>Filtre</servlet-name>
         <servlet-class>servlet.Filtre</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListePlat</servlet-name>
+        <servlet-class>servlet.ListePlat</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListePlats</servlet-name>
         <url-pattern>/ListePlats</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>Filtre</servlet-name>
         <url-pattern>/Filtre</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListePlat</servlet-name>
+        <url-pattern>/ListePlat</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
