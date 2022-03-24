@@ -12,6 +12,14 @@
         <servlet-name>ListePlat</servlet-name>
         <servlet-class>servlet.ListePlat</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DetailsPlat</servlet-name>
+        <servlet-class>servlet.DetailsPlat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CrudMarge</servlet-name>
+        <servlet-class>servlet.CrudMarge</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListePlats</servlet-name>
         <url-pattern>/ListePlats</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>ListePlat</servlet-name>
         <url-pattern>/ListePlat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailsPlat</servlet-name>
+        <url-pattern>/DetailsPlat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CrudMarge</servlet-name>
+        <url-pattern>/CrudMarge</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

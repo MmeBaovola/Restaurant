@@ -34,14 +34,20 @@
                     <tr>
                         <th scope="col">Nom</th>
                         <th scope="col">Prix</th>
+                        <th scope="col">Cout de production</th>
+                        <th scope="col">Prix de revient</th>
+                        <th scope="col">Prix de revient suggeré</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${produits}" var="produit">
+                    <c:forEach items="${prixDeRevient}" var="pr">
                         <tr>
-                            <td>${produit.getNom()}</td>
-                            <td>${produit.getPrix()}</td>
-                            <td></td>
+                            <td><a href="DetailsPlat?idProduit=${pr.getId()}">${pr.getNom()}</a></td>
+                            <td>${pr.getPrix()}</td>
+                            <td>${pr.getPrix_de_revient()}</td>
+                            <td>${pr.getPrix() - pr.getPrix_de_revient()}</td>
+                            <td>${pr.getPrixDeRevientSuggere()}</td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -49,9 +55,9 @@
         </div>
     </body>
     <script>
-        function filtrer(e){
+        function filtrer(e) {
             var filtre = document.getElementById("filtre");
-            window.location.href = "ListePlat?idType="+filtre.value;
+            window.location.href = "ListePlat?idType=" + filtre.value;
         }
     </script>
 </html>

@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class Produit extends DbTablePostgres {
 
-    private int idProduit;
+    private int id;
     int id_type;
     private String nom;
     private double prix;
@@ -14,7 +14,7 @@ public class Produit extends DbTablePostgres {
         Produit p = new Produit();
         Produit[] produits = p.getListeProduit("");
         for (Produit produit : produits) {
-            System.out.println(produit.getIdProduit() + produit.getId_type() + produit.getId_type() + produit.getNom());
+            System.out.println(produit.getId() + produit.getId_type() + produit.getId_type() + produit.getNom());
         }
     }
 
@@ -31,18 +31,18 @@ public class Produit extends DbTablePostgres {
     }
 
     public Produit(int idProduit, int id_type, String nom, double prix) {
-        this.idProduit = idProduit;
+        this.id = idProduit;
         this.id_type = id_type;
         this.nom = nom;
         this.prix = prix;
     }
 
-    public int getIdProduit() {
-        return idProduit;
+    public int getId() {
+        return id;
     }
 
-    public void setIdProduit(int idProduit) {
-        this.idProduit = idProduit;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId_type() {

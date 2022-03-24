@@ -11,43 +11,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.PrixDeRevient;
-import models.Produit;
-import models.Type;
+import models.Marge;
 
-public class ListePlat extends HttpServlet {
-
+/**
+ *
+ * @author ASUSROG
+ */
+public class CrudMarge extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            try {
-                Produit p = new Produit();
-                Type t = new Type();
-                PrixDeRevient pr = new PrixDeRevient();
-                PrixDeRevient[] prixDeRevient = new PrixDeRevient[0];
-//                Produit[] produits = new Produit[0];
-                if (request.getParameter("idType") != null) {
-                    int idType = Integer.valueOf(request.getParameter("idType"));
-//                    produits = p.getListeProduit("id_Type = " + idType);
-                    prixDeRevient = pr.getListePrixDeRevient("id_type ="+ idType);
-
-                    out.println(idType);
-                } else {
-//                    produits = p.getListeProduit("");
-                    prixDeRevient = pr.getListePrixDeRevient("");
-
-                }
-                Type types[] = t.getListeType("");
-//                request.setAttribute("produits", produits);
-                request.setAttribute("prixDeRevient", prixDeRevient);
-                request.setAttribute("types", types);
-                RequestDispatcher disp = request.getRequestDispatcher("listePlat.jsp");
-                disp.forward(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            Marge m = new Marge();
+            Marge[] marges = m.getListeMarge("isCurrent = true");
+            RequestDispatcher rd = request.getRequestDispatcher("crudMarge.jsp");
+            rd.forward(request, response);
         }
     }
 

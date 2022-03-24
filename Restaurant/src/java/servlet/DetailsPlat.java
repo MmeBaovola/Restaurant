@@ -11,43 +11,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.PrixDeRevient;
-import models.Produit;
-import models.Type;
+import models.Ingredient;
 
-public class ListePlat extends HttpServlet {
+/**
+ *
+ * @author ASUSROG
+ */
+public class DetailsPlat extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            try {
-                Produit p = new Produit();
-                Type t = new Type();
-                PrixDeRevient pr = new PrixDeRevient();
-                PrixDeRevient[] prixDeRevient = new PrixDeRevient[0];
-//                Produit[] produits = new Produit[0];
-                if (request.getParameter("idType") != null) {
-                    int idType = Integer.valueOf(request.getParameter("idType"));
-//                    produits = p.getListeProduit("id_Type = " + idType);
-                    prixDeRevient = pr.getListePrixDeRevient("id_type ="+ idType);
+            Ingredient ingredient = new Ingredient();
+            String idProduitString = request.getParameter("idProduit");
+            if (idProduitString != null) {
+                int idProduit = Integer.valueOf(idProduitString);
+                out.println(idProduit);
 
-                    out.println(idType);
-                } else {
-//                    produits = p.getListeProduit("");
-                    prixDeRevient = pr.getListePrixDeRevient("");
-
-                }
-                Type types[] = t.getListeType("");
-//                request.setAttribute("produits", produits);
-                request.setAttribute("prixDeRevient", prixDeRevient);
-                request.setAttribute("types", types);
-                RequestDispatcher disp = request.getRequestDispatcher("listePlat.jsp");
-                disp.forward(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            RequestDispatcher rd = request.getRequestDispatcher("detailsPlat.jsp");
 
+//            rd.forward(request, response);
         }
     }
 
