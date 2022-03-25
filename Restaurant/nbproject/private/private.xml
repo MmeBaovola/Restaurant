@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Studies/Restaurant/src/java/models/Produit.java</file>
-            <file>file:/D:/Studies/Restaurant/web/index.html</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/web/detailsPlat.jsp</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/models/Marge.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/web/crudMarge.jsp</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/servlet/CrudMarge.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/models/ProduitDetails.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/models/PrixDeRevient.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/servlet/ListePlat.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/src/java/models/Produit.java</file>
+            <file>file:/D:/Studies/S5/Mme%20Baovola/Gestion%20de%20restaurant/App/Restaurant/Restaurant/web/listePlat.jsp</file>
         </group>
     </open-files>
 </project-private>
