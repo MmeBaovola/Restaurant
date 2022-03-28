@@ -2,8 +2,6 @@ CREATE DATABASE resto;
 
 \c resto
 
-CREATE SCHEMA resto;
-
 DROP TABLE IF EXISTS type;
 CREATE TABLE type(
 	id SERIAL NOT NULL,
@@ -69,19 +67,109 @@ INSERT INTO produit_detail(id_produit,id_ingredient,quantite) values (2,4,4);
 INSERT INTO produit_detail(id_produit,id_ingredient,quantite) values (2,5,5);
 INSERT INTO produit_detail(id_produit,id_ingredient,quantite) values (2,6,6);
 
-CREATE OR REPLACE VIEW listeIngredient AS select ingredient.id AS id_ingredient, produit_detail.id_produit, produit_detail.quantite*ingredient.prix_unitaire as total_prix from produit_detail, ingredient where produit_detail.id_ingredient = ingredient.id;
-SELECT SUM(produit_detail.quantite*ingredient.prix_unitaire) as total_prix FROM produit_detail, ingredient WHERE produit_detail.id_ingredient = ingredient.id GROUP BY id_produit;
-CREATE OR REPLACE VIEW prixDeRevient AS SELECT produit.*, SUM (listeIngredient.total_prix) AS prix_de_revient from produit JOIN listeIngredient ON produit.id = listeIngredient.id_produit GROUP by produit.id;
+select produit_detail.*, ingredient.*, produit_detail.quantite*ingredient.prix_unitaire as total_prix from produit_detail, ingredient where produit_detail.id_ingredient = ingredient.id and produit_detail.id_produit = 1;  
 
-UPDATE produit SET prix = 10000 WHERE id = 2;
 
-CREATE TABLE marge(
-	min DOUBLE PRECISION,
-	max DOUBLE PRECISION,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP TABLE IF EXISTS serveur;
+CREATE TABLE serveur(
+	id SERIAL NOT NULL,
+	nom VARCHAR(255),
 	pourcentage DOUBLE PRECISION,
-	isCurrent boolean DEFAULT true
+	PRIMARY KEY (id)
 );
-INSERT into marge VALUES(0, 1000, 200, default);
-INSERT into marge VALUES(1000, 2000, 100, default);
-INSERT into marge VALUES(2000, 3000, 50, default);
 
+INSERT INTO serveur VALUES (default,'Jean Rakoto',10),(default,'Ravao Jeanne',10),(default,'Eric',10);
+
+/*
+
+DROP TABLE IF EXISTS ;
+CREATE TABLE (
+	id SERIAL NOT NULL,
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE  ADD CONSTRAINT FK_ FOREIGN KEY () REFERENCES  ();
+
+*/
+
+DROP TABLE IF EXISTS latable;
+CREATE TABLE latable(
+	id SERIAL NOT NULL,
+	nom VARCHAR(255),
+	PRIMARY KEY (id)
+);
+
+INSERT INTO latable VALUES (default,'t1'),(default,'t2'),(default,'t3'),(default,'t4');
+
+DROP TABLE IF EXISTS commande;
+CREATE TABLE commande(
+	id SERIAL NOT NULL,
+	date DATE, 
+	id_table INTEGER NOT NULL,
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE commande ADD CONSTRAINT FK_commande_id_table FOREIGN KEY (id_table) REFERENCES latable (id);
+
+ALTER TABLE commande ADD COLUMN is_valid BOOLEAN default false;
+
+
+INSERT INTO commande VALUES (default,'2022-03-28',1),(default,'2022-03-28',2),(default,'2022-03-28',3),(default,'2022-03-28',4);
+
+DROP TABLE IF EXISTS commande_detail;
+CREATE TABLE commande_detail(
+	id SERIAL NOT NULL,
+	id_commande INTEGER NOT NULL,
+	id_produit INTEGER NOT NULL,
+	prix_unitaire DOUBLE PRECISION,
+	id_serveur INT,
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE  commande_detail ADD CONSTRAINT FK_commande_detail_id_commande FOREIGN KEY (id_commande) REFERENCES commande (id);
+ALTER TABLE  commande_detail ADD CONSTRAINT FK_commande_detail_id_produit FOREIGN KEY (id_produit) REFERENCES produit (id);
+
+INSERT INTO commande_detail VALUES (default,1,1,5000, 1);
+INSERT INTO commande_detail VALUES (default,1,2,3500, 1);
+INSERT INTO commande_detail VALUES (default,1,2,10000, 1);
+
+INSERT INTO commande_detail VALUES (default,2,3,4000, 1);
+INSERT INTO commande_detail VALUES (default,2,4,5000, 1);
+
+INSERT INTO commande_detail VALUES (default,3,5,6000, 2);
+INSERT INTO commande_detail VALUES (default,3,6,7000, 2);
+
+INSERT INTO commande_detail VALUES (default,4,1,5000, 2);
+INSERT INTO commande_detail VALUES (default,4,6,7000, 2);
+
+CREATE TABLE pourboire(
+	id SERIAL NOT NULL,
+	id_serveur INTEGER NOT NULL,
+	id_commande INTEGER NOT NULL,
+	valeur DOUBLE PRECISION,
+	PRIMARY KEY (id)
+);
+
+ALTER TABLE pourboire ADD CONSTRAINT FK_pourboire_id_serveur FOREIGN KEY (id_serveur) REFERENCES serveur (id);
+ALTER TABLE pourboire ADD CONSTRAINT FK_pourboire_id_commande FOREIGN KEY (id_commande) REFERENCES commande (id);
+
+INSERT INTO pourboire VALUES (default,1,1,850),(default,1,2,900),(default,2,3,1300),(default,2,4,1200);
+
+SELECT serveur.nom, id_serveur, SUM(pourboire.valeur) as somme from serveur,pourboire,commande where pourboire.id_commande = commande.id and commande.date >= '2021-02-02' and commande.date <= '2022-03-28' GROUP by id_serveur, serveur.nom; 
+
+SELECT serveur.nom, id_serveur, SUM(pourboire.valeur) as somme from serveur JOIN pourboire ON serveur.id = pourboire.id_serveur JOIN commande ON pourboire.id_commande = commande.id WHERE commande.date >= '2021-02-02' and commande.date <= '2022-03-28' GROUP by pourboire.id_serveur, serveur.nom;

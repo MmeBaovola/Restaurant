@@ -20,6 +20,10 @@
         <servlet-name>CrudMarge</servlet-name>
         <servlet-class>servlet.CrudMarge</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListeServeur</servlet-name>
+        <servlet-class>servlet.ListeServeur</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListePlats</servlet-name>
         <url-pattern>/ListePlats</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>CrudMarge</servlet-name>
         <url-pattern>/CrudMarge</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListeServeur</servlet-name>
+        <url-pattern>/ListeServeur</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
