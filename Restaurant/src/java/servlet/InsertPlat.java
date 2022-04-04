@@ -11,22 +11,30 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Ingredient;
-import models.ListeIngredientView;
+import models.Commande_detail;
+import models.Produit;
 
-public class DetailsPlat extends HttpServlet {
+public class InsertPlat extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("details");
-            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-            ListeIngredientView listeView = new ListeIngredientView();
-            ListeIngredientView[] listeIngredientView = listeView.getListeIngredientView("id_produit = " + idProduit);
-            request.setAttribute("listeIngredientView", listeIngredientView);
-            RequestDispatcher disp = request.getRequestDispatcher("detailsPlat.jsp");
-            disp.forward(request, response);
+            try {
+                int idCommande = Integer.valueOf(request.getParameter("idCommande"));
+                int idPlat = Integer.valueOf(request.getParameter("idPlat"));
+                int quantite = Integer.valueOf(request.getParameter("quantite"));
+                int idTable = Integer.valueOf(request.getParameter("idTable"));
+                Produit p = new Produit();
+                double prix = p.getListeProduit("id = " + idPlat)[0].getPrix();
+                Commande_detail commandeDetail = new Commande_detail(0, idCommande, idPlat, quantite, prix, 1);
+                commandeDetail.insert();
+                RequestDispatcher dp = request.getRequestDispatcher("CommanderPlat?idTable="+idTable);
+                dp.forward(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+                response.sendRedirect("CommanderPlat");
+            }
         }
     }
 

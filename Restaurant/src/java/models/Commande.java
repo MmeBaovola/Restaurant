@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Commande extends DbTablePostgres {
 
-    int id_commande;
+    int id;
     Date date;
     int id_table;
     boolean is_valid;
@@ -27,7 +27,7 @@ public class Commande extends DbTablePostgres {
     }
 
     public Commande(int id_commande, Date daty, int id_table, boolean is_valid) {
-        this.id_commande = id_commande;
+        this.id = id_commande;
         this.date = daty;
         this.id_table = id_table;
         this.is_valid = is_valid;
@@ -41,12 +41,12 @@ public class Commande extends DbTablePostgres {
         this.is_valid = is_valid;
     }
 
-    public int getId_commande() {
-        return id_commande;
+    public int getId() {
+        return id;
     }
 
-    public void setId_commande(int id_commande) {
-        this.id_commande = id_commande;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getDate() {

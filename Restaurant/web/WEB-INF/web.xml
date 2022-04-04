@@ -24,6 +24,22 @@
         <servlet-name>ListeServeur</servlet-name>
         <servlet-class>servlet.ListeServeur</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CommanderPlat</servlet-name>
+        <servlet-class>servlet.CommanderPlat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertPlat</servlet-name>
+        <servlet-class>servlet.InsertPlat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FermerCommande</servlet-name>
+        <servlet-class>servlet.FermerCommande</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListeProduit</servlet-name>
+        <servlet-class>servlet.ListeProduit</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListePlats</servlet-name>
         <url-pattern>/ListePlats</url-pattern>
@@ -47,6 +63,22 @@
     <servlet-mapping>
         <servlet-name>ListeServeur</servlet-name>
         <url-pattern>/ListeServeur</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommanderPlat</servlet-name>
+        <url-pattern>/CommanderPlat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertPlat</servlet-name>
+        <url-pattern>/InsertPlat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FermerCommande</servlet-name>
+        <url-pattern>/FermerCommande</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListeProduit</servlet-name>
+        <url-pattern>/ListeProduit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

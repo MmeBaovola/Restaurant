@@ -11,21 +11,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Ingredient;
-import models.ListeIngredientView;
+import models.Commande;
 
-public class DetailsPlat extends HttpServlet {
-
+public class FermerCommande extends HttpServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("details");
-            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-            ListeIngredientView listeView = new ListeIngredientView();
-            ListeIngredientView[] listeIngredientView = listeView.getListeIngredientView("id_produit = " + idProduit);
-            request.setAttribute("listeIngredientView", listeIngredientView);
-            RequestDispatcher disp = request.getRequestDispatcher("detailsPlat.jsp");
+            Commande commande = new Commande();
+            int idCommande = Integer.valueOf(request.getParameter("idCommande"));
+            commande.update("is_valid=true", "id=" + idCommande);
+            RequestDispatcher disp = request.getRequestDispatcher("CommanderPlat");
             disp.forward(request, response);
         }
     }

@@ -11,22 +11,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Ingredient;
-import models.ListeIngredientView;
+import models.Produit;
 
-public class DetailsPlat extends HttpServlet {
+public class ListeProduit extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("details");
-            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-            ListeIngredientView listeView = new ListeIngredientView();
-            ListeIngredientView[] listeIngredientView = listeView.getListeIngredientView("id_produit = " + idProduit);
-            request.setAttribute("listeIngredientView", listeIngredientView);
-            RequestDispatcher disp = request.getRequestDispatcher("detailsPlat.jsp");
-            disp.forward(request, response);
+            try {
+                Produit p = new Produit();
+                Produit[] listeProduit = p.getListeProduit("");
+                request.setAttribute("listeProduit", listeProduit);
+                RequestDispatcher disp = request.getRequestDispatcher("listeProduit.jsp");
+                disp.forward(request, response);
+            } catch (Exception e) {
+            }
         }
     }
 

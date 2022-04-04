@@ -5,10 +5,10 @@ import java.util.Vector;
 
 public class Produit extends DbTablePostgres {
 
-    private int id;
+    int id;
     int id_type;
-    private String nom;
-    private double prix;
+    String nom;
+    double prix;
 
     public static void main(String args[]) throws Exception {
         Produit p = new Produit();

@@ -11,13 +11,34 @@ public class Commande_detail extends DbTablePostgres {
     int id;
     int id_commande;
     int id_produit;
+    int quantite;
     double prix_unitaire;
+    int id_serveur;
 
-    public Commande_detail(int id, int id_commande, int id_produit, double prix_unitaire) {
+   
+    public Commande_detail(int id, int id_commande, int id_produit, int quantite, double prix_unitaire, int id_serveur) {
         this.id = id;
         this.id_commande = id_commande;
         this.id_produit = id_produit;
+        this.quantite = quantite;
         this.prix_unitaire = prix_unitaire;
+        this.id_serveur = id_serveur;
+    }
+
+    public int getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
+    }
+
+    public int getId_serveur() {
+        return id_serveur;
+    }
+
+    public void setId_serveur(int id_serveur) {
+        this.id_serveur = id_serveur;
     }
 
     public int getId() {

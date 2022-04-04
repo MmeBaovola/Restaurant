@@ -11,22 +11,46 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Ingredient;
-import models.ListeIngredientView;
+import models.*;
 
-public class DetailsPlat extends HttpServlet {
+public class CommanderPlat extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("details");
-            int idProduit = Integer.valueOf(request.getParameter("idProduit"));
-            ListeIngredientView listeView = new ListeIngredientView();
-            ListeIngredientView[] listeIngredientView = listeView.getListeIngredientView("id_produit = " + idProduit);
-            request.setAttribute("listeIngredientView", listeIngredientView);
-            RequestDispatcher disp = request.getRequestDispatcher("detailsPlat.jsp");
-            disp.forward(request, response);
+            try {
+                int idTable = 1;
+                try {
+                    idTable = Integer.valueOf(request.getParameter("idTable"));
+                } catch (Exception e) {
+                }
+                request.setAttribute("idTable", idTable);
+                Produit produit = new Produit();
+                Commande commande = new Commande();
+                LaTable table = new LaTable();
+                CommandeView commandeView = new CommandeView();
+                LaTable[] listeTable = table.getListeTable("");
+                Commande commandeActuelle = commande.getListeCommande("id_table = " + idTable + " AND is_valid = false")[0];
+                int idCommande = commandeActuelle.getId();
+                request.setAttribute("idCommande", idCommande);
+                request.setAttribute("listeTable", listeTable);
+                CommandeView[] listeCommandeView = commandeView.getListeCommandeView("id_commande = " + idCommande);
+                request.setAttribute("listeCommandeView", listeCommandeView);
+                int total = 0;
+                for (int i = 0; i < listeCommandeView.length; i++) {
+                    total += listeCommandeView[i].getPrix();
+                }
+                request.setAttribute("total", total);
+
+                Produit[] listeProduit = produit.getListeProduit("");
+                request.setAttribute("listeProduit", listeProduit);
+                RequestDispatcher disp = request.getRequestDispatcher("insererCommande.jsp");
+                disp.forward(request, response);
+            } catch (Exception e) {
+                RequestDispatcher disp = request.getRequestDispatcher("insererCommande.jsp");
+                disp.forward(request, response);
+            }
         }
     }
 

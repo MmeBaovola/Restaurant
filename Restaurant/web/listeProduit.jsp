@@ -14,23 +14,28 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="bootstrap.css" rel="stylesheet">
-        <title>Details Plat</title>
+        <title>Liste des plats</title>
     </head>
     <body>
         <div class="container">
-            <h1 class="text-center">Details du plat / Liste des ingredients</h1>
+            <h3 class="text-center">Liste des plats</h3>
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th scope="col">Nom</th>
-                        <th scope="col">Quantite</th>
+                        <th scope="col">Prix</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${listeIngredientView}" var="ingredient">
+                    <c:forEach items="${listeProduit}" var="produit">
                         <tr>
-                            <td>${ingredient.nom_ingredient}</td>
-                            <td>${ingredient.quantite}</td>
+                            <td>${produit.nom}</td>
+                            <td>${produit.prix}</td>
+                            <td>
+                                <button class="btn btn-info" onclick="voirDetails(${produit.id})">
+                                    Details
+                                </button>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -38,9 +43,8 @@
         </div>
     </body>
     <script>
-        function filtrer(e) {
-            var filtre = document.getElementById("filtre");
-            window.location.href = "ListePlat?idType=" + filtre.value;
+        function voirDetails(idProduit) {
+            window.location.href = "DetailsPlat?idProduit=" + idProduit;
         }
     </script>
 </html>

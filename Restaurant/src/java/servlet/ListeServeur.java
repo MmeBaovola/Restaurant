@@ -13,10 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.PourboireView;
 
-/**
- *
- * @author ASUSROG
- */
 public class ListeServeur extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
