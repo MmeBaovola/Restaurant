@@ -11,46 +11,42 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.*;
+import models.IngredientUtilise;
+import models.Prix_total_ingredient;
 
-public class CommanderPlat extends HttpServlet {
+public class ListeIngredientUtilise extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            String dateMin = "";
+            String dateMax = "";
+            double prixTotal = 0;
+            IngredientUtilise ingredientUtilise = new IngredientUtilise();
+            Prix_total_ingredient prixTotalIngredient = new Prix_total_ingredient();
+            IngredientUtilise[] listeIngredientUtilise = null;
             try {
-                int idTable = 1;
-                try {
-                    idTable = Integer.valueOf(request.getParameter("idTable"));
-                } catch (Exception e) {
-                }
-                request.setAttribute("idTable", idTable);
-                Produit produit = new Produit();
-                Commande commande = new Commande();
-                LaTable table = new LaTable();
-                CommandeView commandeView = new CommandeView();
-                LaTable[] listeTable = table.getListeTable("");
-                Commande commandeActuelle = commande.getListeCommande("id_table = " + idTable + " AND is_valid = false")[0];
-                int idCommande = commandeActuelle.getId();
-                request.setAttribute("idCommande", idCommande);
-                request.setAttribute("listeTable", listeTable);
-                CommandeView[] listeCommandeView = commandeView.getListeCommandeView("id_commande = " + idCommande);
-                request.setAttribute("listeCommandeView", listeCommandeView);
-                int total = 0;
-                for (int i = 0; i < listeCommandeView.length; i++) {
-                    total += listeCommandeView[i].getPrix();
-                }
-                request.setAttribute("total", total);
-
-                Produit[] listeProduit = produit.getListeProduit("");
-                request.setAttribute("listeProduit", listeProduit);
-                RequestDispatcher disp = request.getRequestDispatcher("commanderPlat.jsp");
-                disp.forward(request, response);
+                dateMin = request.getParameter("dateMin");
+                dateMax = request.getParameter("dateMax");
+                prixTotal = prixTotalIngredient.getListePrix_total_ingredient("date >= '" + dateMin + "' AND date <= '" + dateMax + "'")[0].getPrix_total();
+                listeIngredientUtilise = ingredientUtilise.getListeIngredientUtilise("date >= '" + dateMin + "' AND date <= '" + dateMax + "'");
             } catch (Exception e) {
-                RequestDispatcher disp = request.getRequestDispatcher("commanderPlat.jsp");
+                if (dateMin == "" && dateMax == "") {
+                    prixTotal = prixTotalIngredient.getListePrix_total_ingredient("")[0].getPrix_total();
+                    listeIngredientUtilise = ingredientUtilise.getListeIngredientUtilise("");
+                }
+                e.printStackTrace();
+            } finally {
+                request.setAttribute("listeIngredientUtilise", listeIngredientUtilise);
+                request.setAttribute("prixTotal", prixTotal);
+                RequestDispatcher disp = request.getRequestDispatcher("listeIngredientUtilise.jsp");
                 disp.forward(request, response);
             }
+            out.println(listeIngredientUtilise.length);
+
+//            RequestDispatcher disp = request.getRequestDispatcher("listeIngredientUtilise.jsp");
+//            disp.forward(request, response);
         }
     }
 

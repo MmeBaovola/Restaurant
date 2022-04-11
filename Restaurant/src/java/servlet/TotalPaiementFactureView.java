@@ -6,51 +6,52 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.*;
+import models.Total_paiement_facture_view;
 
-public class CommanderPlat extends HttpServlet {
+public class TotalPaiementFactureView extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            Total_paiement_facture_view totalPaiementModel = new Total_paiement_facture_view();
+            Total_paiement_facture_view[] listePaiement = null;
             try {
-                int idTable = 1;
-                try {
-                    idTable = Integer.valueOf(request.getParameter("idTable"));
-                } catch (Exception e) {
+                String date1 = request.getParameter("dateMin");
+                String date2 = request.getParameter("dateMax");
+                if (date1 != null && date2 != null) {
+                    try {
+                        Date date_1 = Date.valueOf(date1);
+                        Date date_2 = Date.valueOf(date2);
+                        String type = request.getParameter("type");
+                        if (!"".equals(type)) {
+                            listePaiement = totalPaiementModel.getListePaiement("date >= '" + date1 + "' AND date <= '" + date2 + "' AND nom_type = '" + type + "'");
+                        } else {
+                            listePaiement = totalPaiementModel.getListePaiement("date >= '" + date1 + "' AND date <= '" + date2 + "'");
+                        }
+                    } catch (Exception ex) {
+                        String type = request.getParameter("type");
+                        if (!"".equals(type)) {
+                            listePaiement = totalPaiementModel.getListePaiement("nom_type = '" + type + "'");
+                        } else {
+                            listePaiement = totalPaiementModel.getListePaiement("");
+                        }
+                    }
+                } else {
+                    listePaiement = totalPaiementModel.getListePaiement("");
                 }
-                request.setAttribute("idTable", idTable);
-                Produit produit = new Produit();
-                Commande commande = new Commande();
-                LaTable table = new LaTable();
-                CommandeView commandeView = new CommandeView();
-                LaTable[] listeTable = table.getListeTable("");
-                Commande commandeActuelle = commande.getListeCommande("id_table = " + idTable + " AND is_valid = false")[0];
-                int idCommande = commandeActuelle.getId();
-                request.setAttribute("idCommande", idCommande);
-                request.setAttribute("listeTable", listeTable);
-                CommandeView[] listeCommandeView = commandeView.getListeCommandeView("id_commande = " + idCommande);
-                request.setAttribute("listeCommandeView", listeCommandeView);
-                int total = 0;
-                for (int i = 0; i < listeCommandeView.length; i++) {
-                    total += listeCommandeView[i].getPrix();
-                }
-                request.setAttribute("total", total);
-
-                Produit[] listeProduit = produit.getListeProduit("");
-                request.setAttribute("listeProduit", listeProduit);
-                RequestDispatcher disp = request.getRequestDispatcher("commanderPlat.jsp");
-                disp.forward(request, response);
             } catch (Exception e) {
-                RequestDispatcher disp = request.getRequestDispatcher("commanderPlat.jsp");
-                disp.forward(request, response);
+                listePaiement = totalPaiementModel.getListePaiement("");
             }
+            request.setAttribute("listePaiement", listePaiement);
+            RequestDispatcher disp = request.getRequestDispatcher("facture.jsp");
+            disp.forward(request, response);
         }
     }
 

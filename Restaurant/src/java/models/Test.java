@@ -5,26 +5,20 @@
 package models;
 
 import dbTable.DbTablePostgres;
-import java.util.Date;
+import java.math.BigInteger;
+import java.sql.Date;
 
 public class Test extends DbTablePostgres {
 
-    int id;
-    Date daty;
-    int id_table;
+    Date date;
+    int sum;
 
     public Test() {
     }
 
-    public Test(int id, Date daty, int id_table) {
-        this.id = id;
-        this.daty = daty;
-        this.id_table = id_table;
-    }
-
-    public static void main(String args[]) {
-        Test test = new Test();
-        System.out.println(test.getListe("").length);
+    public Test(Date date, int sum) {
+        this.date = date;
+        this.sum = sum;
     }
 
     public Test[] getListe(String conditions) {

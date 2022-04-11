@@ -40,6 +40,18 @@
         <servlet-name>ListeProduit</servlet-name>
         <servlet-class>servlet.ListeProduit</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListeIngredientUtilise</servlet-name>
+        <servlet-class>servlet.ListeIngredientUtilise</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Masakevation</servlet-name>
+        <servlet-class>servlet.Masakevation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TotalPaiementFactureView</servlet-name>
+        <servlet-class>servlet.TotalPaiementFactureView</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ListePlats</servlet-name>
         <url-pattern>/ListePlats</url-pattern>
@@ -79,6 +91,18 @@
     <servlet-mapping>
         <servlet-name>ListeProduit</servlet-name>
         <url-pattern>/ListeProduit</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListeIngredientUtilise</servlet-name>
+        <url-pattern>/ListeIngredientUtilise</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Masakevation</servlet-name>
+        <url-pattern>/Masakevation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TotalPaiementFactureView</servlet-name>
+        <url-pattern>/TotalPaiementFactureView</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

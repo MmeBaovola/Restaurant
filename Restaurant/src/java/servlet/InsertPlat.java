@@ -27,7 +27,7 @@ public class InsertPlat extends HttpServlet {
                 int idTable = Integer.valueOf(request.getParameter("idTable"));
                 Produit p = new Produit();
                 double prix = p.getListeProduit("id = " + idPlat)[0].getPrix();
-                Commande_detail commandeDetail = new Commande_detail(0, idCommande, idPlat, quantite, prix, 1);
+                Commande_detail commandeDetail = new Commande_detail(0, idCommande, idPlat, prix, 1, false);
                 commandeDetail.insert();
                 RequestDispatcher dp = request.getRequestDispatcher("CommanderPlat?idTable="+idTable);
                 dp.forward(request, response);

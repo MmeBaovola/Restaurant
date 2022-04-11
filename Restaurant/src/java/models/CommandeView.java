@@ -8,12 +8,29 @@ import dbTable.DbTablePostgres;
 
 public class CommandeView extends DbTablePostgres {
 
+    int id_commande_detail;
     int id_commande;
     String nomPlat;
-    int quantite;
     double prix;
+    boolean estMasake;
 
     public CommandeView() {
+    }
+
+    public CommandeView(int id_commande_detail, int id_commande, String nomPlat, double prix, boolean estMasake) {
+        this.id_commande_detail = id_commande_detail;
+        this.id_commande = id_commande;
+        this.nomPlat = nomPlat;
+        this.prix = prix;
+        this.estMasake = estMasake;
+    }
+
+    public int getId_commande_detail() {
+        return id_commande_detail;
+    }
+
+    public void setId_commande_detail(int id_commande_detail) {
+        this.id_commande_detail = id_commande_detail;
     }
 
     public CommandeView[] getListeCommandeView(String conditions) {
@@ -25,11 +42,12 @@ public class CommandeView extends DbTablePostgres {
         return retour;
     }
 
-    public CommandeView(int id_commande, String nomPlat, int quantite, double prix) {
-        this.id_commande = id_commande;
-        this.nomPlat = nomPlat;
-        this.quantite = quantite;
-        this.prix = prix;
+    public boolean isEstMasake() {
+        return estMasake;
+    }
+
+    public void setEstMasake(boolean estMasake) {
+        this.estMasake = estMasake;
     }
 
     public int getId_commande() {
@@ -46,14 +64,6 @@ public class CommandeView extends DbTablePostgres {
 
     public void setNomPlat(String nomPlat) {
         this.nomPlat = nomPlat;
-    }
-
-    public int getQuantite() {
-        return quantite;
-    }
-
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
     }
 
     public double getPrix() {

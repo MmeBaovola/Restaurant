@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>inserer commande</title>
+        <title>Commander plat</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="bootstrap.css" rel="stylesheet">
@@ -27,7 +27,6 @@
                         <thead>
                             <tr>
                                 <th scope="col">Plats</th>
-                                <th scope="col">Quantite</th>
                                 <th scope="col">Prix</th>
                             </tr>
                         </thead>
@@ -35,8 +34,10 @@
                             <c:forEach items="${listeCommandeView}" var="commandeView">
                                 <tr>
                                     <td>${commandeView.nomPlat}</td>
-                                    <td>${commandeView.quantite}</td>
                                     <td>${commandeView.prix}</td>
+                                    <td>
+                                        <button onclick="masakevana(${commandeView.id_commande_detail})" class="btn btn-warning">Masakevana</button>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -65,4 +66,10 @@
             </form>
         </div>
     </body>
+    <script>
+        function masakevana(idCommandeDetail){
+            window.location.href = "Masakevation?idCommandeDetail="+idCommandeDetail;
+            console.log("lelena");
+        }
+    </script>
 </html>

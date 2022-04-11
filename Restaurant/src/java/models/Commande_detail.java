@@ -11,26 +11,20 @@ public class Commande_detail extends DbTablePostgres {
     int id;
     int id_commande;
     int id_produit;
-    int quantite;
     double prix_unitaire;
     int id_serveur;
+    boolean estMasake;
 
-   
-    public Commande_detail(int id, int id_commande, int id_produit, int quantite, double prix_unitaire, int id_serveur) {
+    public Commande_detail() {
+    }
+
+    public Commande_detail(int id, int id_commande, int id_produit, double prix_unitaire, int id_serveur, boolean estMasake) {
         this.id = id;
         this.id_commande = id_commande;
         this.id_produit = id_produit;
-        this.quantite = quantite;
         this.prix_unitaire = prix_unitaire;
         this.id_serveur = id_serveur;
-    }
-
-    public int getQuantite() {
-        return quantite;
-    }
-
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
+        this.estMasake = estMasake;
     }
 
     public int getId_serveur() {
@@ -49,7 +43,12 @@ public class Commande_detail extends DbTablePostgres {
         this.id = id;
     }
 
-    public Commande_detail() {
+    public boolean isEstMasake() {
+        return estMasake;
+    }
+
+    public void setEstMasake(boolean estMasake) {
+        this.estMasake = estMasake;
     }
 
     public Commande_detail[] getListeCommandeDetails(String conditions) {

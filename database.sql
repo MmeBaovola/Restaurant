@@ -177,3 +177,118 @@ SELECT serveur.nom, id_serveur, SUM(pourboire.valeur) as somme from serveur JOIN
 
 CREATE OR REPLACE VIEW commandeView AS SELECT commande_detail.id_commande, produit.nom AS nomPlat, commande_detail.quantite, commande_detail.prix_unitaire*quantite AS prix FROM produit JOIN commande_detail
 ON commande_detail.id_produit = produit.id;
+
+
+-- 05 / 04 / 2022 
+
+SELECT ingredient.id, ingredient.nom, ingredient.prix_unitaire, sum(produit_detail.quantite) as sum_quantite
+FROM commande, commande_detail, produit_detail, ingredient
+where commande_detail.id_commande = commande.id and commande_detail.id_produit = produit_detail.id_produit and produit_detail.id_ingredient = ingredient.id
+and commande.date >= '2022-03-28' and commande.date <= '2022-03-28' group by ingredient.id;
+
+DROP view IF EXISTS ingredientUtilise;
+CREATE OR REPLACE VIEW ingredientUtilise AS SELECT commande.date, ingredient.id as id_ingredient, ingredient.nom AS nom_ingredient, 
+ingredient.prix_unitaire, sum(produit_detail.quantite)::DOUBLE PRECISION as sum_quantite, 
+ingredient.prix_unitaire * sum(produit_detail.quantite) AS prix_total
+FROM commande, commande_detail, produit_detail, ingredient
+where commande_detail.id_commande = commande.id and commande_detail.id_produit = produit_detail.id_produit and produit_detail.id_ingredient = ingredient.id group by ingredient.id, commande.date;
+SELECT * from ingredientUtilise;
+
+DROP VIEW IF EXISTS prix_total_ingredient;
+CREATE OR REPLACE VIEW prix_total_ingredient AS SELECT date, sum(prix_total) AS prix_total FROM ingredientUtilise GROUP BY date;
+SELECT * from prix_total_ingredient;
+
+DROP TABLE IF EXISTS inventaire;
+CREATE TABLE inventaire(
+	id SERIAL NOT NULL,
+	date DATE,
+	PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS detail_inventaire;
+CREATE TABLE detail_inventaire(
+	id_inventaire INT NOT NULL,
+	id_ingredient INT NOT NULL,
+	quantite INT
+);
+
+ALTER TABLE detail_inventaire ADD CONSTRAINT FK_detail_inventaire_id_inventaire FOREIGN KEY (id_inventaire) REFERENCES inventaire (id);
+ALTER TABLE detail_inventaire ADD CONSTRAINT FK_detail_inventaire_id_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient (id);
+
+INSERT INTO inventaire values (default,'2021-12-10');
+
+INSERT INTO detail_inventaire values (1,1,4000),(1,2,8000),(1,3,16000),(1,4,8000),(1,5,5000),(1,6,6000); 
+
+DROP TABLE IF EXISTS mouvement_stock;
+CREATE TABLE mouvement_stock(
+	id SERIAL NOT NULL,
+	id_ingredient INT NOT NULL,
+	date DATE,
+	quantite INT,
+	type INT,
+	PRIMARY KEY (id)
+);
+ALTER TABLE mouvement_stock ADD CONSTRAINT FK_mouvement_stock_id_ingredient FOREIGN KEY (id_ingredient) REFERENCES ingredient (id);
+
+-- 07/04/2022
+
+-- TSY FAFANA ITO (query insert into mouvement_stock)*********
+-- insert into mouvement_stock(id_ingredient,date ,quantite,type)(select ingredient.id, NOW(),quantite,1 from listeingredientview JOIN ingredient ON ingredient.nom = listeingredientview.nom_ingredient where id_produit=1);
+-- *************************
+SELECT * from mouvement_stock;
+
+ALTER TABLE commande_detail ADD COLUMN estMasake boolean default false;
+
+ALTER TABLE commande_detail DROP COLUMN quantite CASCADE;
+
+CREATE OR REPLACE VIEW commandeView AS SELECT commande_detail.id_commande, produit.nom AS nomPlat, commande_detail.prix_unitaire AS prix, commande_detail.estMasake AS estMasake
+FROM produit JOIN commande_detail ON commande_detail.id_produit = produit.id;
+
+-- Ajout de id_commande_detail dans commandeView
+
+DROP VIEW commandeView CASCADE;
+CREATE OR REPLACE VIEW commandeView AS SELECT commande_detail.id AS id_commande_detail, commande_detail.id_commande, produit.nom AS nomPlat, commande_detail.prix_unitaire AS prix, commande_detail.estMasake AS estMasake
+FROM produit JOIN commande_detail ON commande_detail.id_produit = produit.id;
+
+DROP TABLE if EXISTS Facture_Commande;
+CREATE TABLE Facture_Commande(
+	id SERIAL PRIMARY KEY NOT NULL,
+	id_commande INT,
+	est_Paye boolean,
+	date DATE DEFAULT NOw()
+);
+
+DROP TABLE if EXISTS type_paiement;
+CREATE TABLE type_paiement(
+	id SERIAL PRIMARY KEY NOT NULL,
+	nom_type VARCHAR(15)
+);
+INSERT INTO type_paiement VALUES (default, 'Cheque');
+INSERT INTO type_paiement VALUES (default, 'Espece');
+
+DROP TABLE if EXISTS paiement_facture_commande CASCADE;
+CREATE TABLE paiement_facture_commande(
+	id_facture_commande INT,
+	montant DOUBLE PRECISION,
+	id_type_paiement INT
+);
+
+CREATE OR REPLACE VIEW total_paiement_Cheque AS SELECT SUM(paiement_fac.montant)::DOUBLE PRECISION AS total, typee.nom_type, fac.date FROM paiement_facture_commande AS paiement_fac
+JOIN type_paiement AS typee ON typee.id = paiement_fac.id_type_paiement JOIN facture_commande AS fac ON paiement_fac.id_facture_commande = fac.id GROUP BY typee.nom_type, fac.date;
+
+insert into facture_commande values(default,1,false),(default,2,false),(default,3,false),(default,4,false),(default,5,false),(default,6,false);
+
+insert into paiement_facture_commande values (1,1000, 1),(1,1000, 1),(1,1000, 1),(2,1000, 2),(2,1000, 2),(2,1000, 2),(3,1000, 2),(3,1000,1),(4,1000, 1 ),(4,1000, 2),(4,1000, 1);
+
+select fc.id_commande,co.date,sum(cd.prix_unitaire),sum(pf.montant),tp.nom_type,case when sum(cd.prix_unitaire)=sum(pf.montant) then 'Payé' else 'non payé' end from facture_commande as fc 
+    join paiement_facture_commande as pf on pf.id_facture_commande=fc.id 
+    join commande as co on co.id=fc.id_commande 
+    join type_paiement as tp on tp.id=pf.id_type_paiement 
+    join commande_detail as cd on cd.id_commande=co.id
+    where tp.nom_type='espece' group by fc.id_commande, co.date, tp.nom_type;
+
+drop view if exists total_paiement_facture_view;
+CREATE OR REPLACE VIEW total_paiement_facture_view AS
+SELECT date, SUM(total_a_payer) AS total_a_paye, SUM(deja_paye) AS deja_paye, (SUM(total_a_payer) - SUM(deja_paye)) AS reste_a_payer, nom_type 
+FROM Paiement_facture_view GROUP BY nom_type, date;
+SELECT * from total_paiement_facture_view;

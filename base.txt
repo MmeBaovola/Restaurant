@@ -1,0 +1,11 @@
+insert into facture_commande values(default,1,false),(default,2,false),(default,3,false),(default,4,false),(default,5,false),(default,6,false);
+
+insert into paiement_facture_commande values (1,1000),(1,1000),(1,1000),(2,1000),(2,1000),(2,1000),(3,1000),(3,1000),(4,1000),(4,1000),(4,1000);
+
+select fc.id_commande,co.date,sum(cd.prix_unitaire),sum(pf.montant),tp.nom_type,case when sum(cd.prix_unitaire)=sum(pf.montant) then 'Payé' else 'non payé' from facture_commande as fc 
+    join paiement_facture_commande as pf on pf.id_facture_commande=fc.id 
+    join commande as co on co.id=fc.id_commande 
+    join type_paiement as tp on tp.id=pf.id_tpe_paiement 
+    join commande_detail as cd on cd.id_commande=co.id 
+    group by fc.id_commande
+    where tp.nom_type='espece' and co.date >= 'min' and co.date =< 'max';
